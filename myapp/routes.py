@@ -10,7 +10,7 @@ def index():
     redirections = db.session.execute(db.select(Redirection)).scalars()
     return render_template('index.html', redirections=redirections)
 
-
+# c
 # @app.route("/about")
 # def about():
 #     return render_template('about.html', title='About')

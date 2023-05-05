@@ -5,7 +5,6 @@ from myapp.models import Redirection
 
 
 
-
 @app.route("/")
 def index():
     redirections = db.session.execute(db.select(Redirection)).scalars()

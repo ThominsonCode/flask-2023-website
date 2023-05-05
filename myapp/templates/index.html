@@ -1,0 +1,11 @@
+{% extends "common.html" %}
+
+{% block body %}
+<h1>Index</h1>
+
+{% for r in redirections %}
+    <p>{{r.url_from}} => {{r.url_to}}</p>
+    
+{% endfor %}
+
+{% endblock %}

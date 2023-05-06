@@ -1,3 +1,3 @@
-import validators
+from faker import Faker
+fake = Faker()
 
-print(validators.url("http://google.fr/thoas?pap=fe"))

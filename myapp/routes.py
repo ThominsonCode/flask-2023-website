@@ -1,15 +1,26 @@
 from flask import render_template, url_for, flash, redirect
 from myapp import app, db
-# from flaskblog.forms import RegistrationForm, LoginForm
+from myapp.forms import RedirectionForm
 from myapp.models import Redirection
 
+import random
+import string
 
 
-
-@app.route("/")
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    form = RedirectionForm()
+    if form.validate_on_submit():
+        redirection = Redirection(
+            url_from = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6)),
+            url_to = form.url_to.data
+        )
+        db.session.add(redirection)
+        db.session.commit()
+        return redirect(url_for('index'))
+
     redirections = db.session.execute(db.select(Redirection)).scalars()
-    return render_template('index.html', redirections=redirections)
+    return render_template('index.html', redirections=redirections, form=form)
 
 # c
 # @app.route("/about")

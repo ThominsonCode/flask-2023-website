@@ -3,9 +3,32 @@
 {% block body %}
 <h1>Index</h1>
 
+<form method="POST" action="/">
+    {{ form.csrf_token }}
+    {{ form.url_to.label(class="form-label") }} {{ form.url_to(size=20, class="form-control") }}
+
+    {% if form.url_to.errors %}
+        {% for error in form.url_to.errors %}
+            <div class="form-text">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {{ form.submit(class="btn btn-primary") }} 
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>URL courte</th>
+            <th>URL de destination</th>
+        </tr>
+    </thead>
 {% for r in redirections %}
-    <p>{{r.url_from}} => {{r.url_to}}</p>
-    
+<tr>
+    <td>{{r.url_from}}</td>
+    <td>{{r.url_to | truncate(100) }}</td>
+</tr>
 {% endfor %}
+</table>
 
 {% endblock %}

@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
-# from wtforms import StringField, PasswordField, SubmitField, BooleanField
-# from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, URL
 
+class RedirectionForm(FlaskForm) :
+    url_to = StringField('URL', validators=[DataRequired(), URL(message='Cette URL n\'est pas valide.')])
+    submit = SubmitField('Raccourcir')
 
 # class RegistrationForm(FlaskForm):
 #     username = StringField('Username',

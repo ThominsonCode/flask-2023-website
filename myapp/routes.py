@@ -12,7 +12,7 @@ def index():
     form = RedirectionForm()
     if form.validate_on_submit():
         redirection = Redirection(
-            url_from = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6)),
+            url_from = ''.join(random.choice(string.ascii_letters) for _ in range(6)),
             url_to = form.url_to.data
         )
         db.session.add(redirection)
@@ -22,7 +22,12 @@ def index():
     redirections = db.session.execute(db.select(Redirection)).scalars()
     return render_template('index.html', redirections=redirections, form=form)
 
-# c
+@app.route('/<string:url>')
+def redirection(url):
+    redirection = db.one_or_404(db.select(Redirection).where(Redirection.url_from == url))
+    return redirect(redirection.url_to)
+
+
 # @app.route("/about")
 # def about():
 #     return render_template('about.html', title='About')

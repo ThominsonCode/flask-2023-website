@@ -11,36 +11,22 @@ import string
 def index():
     form = RedirectionForm()
     if form.validate_on_submit():
-        redirection = Redirection(
-            url_from = ''.join(random.choice(string.ascii_letters) for _ in range(6)),
-            url_to = form.url_to.data
+        red = Redirection(
+            url_from=''.join(random.choice(string.ascii_letters) for _ in range(4)),
+            url_to=form.url_to.data
         )
-        db.session.add(redirection)
+        db.session.add(red)
         db.session.commit()
         return redirect(url_for('index'))
 
-    redirections = db.session.execute(db.select(Redirection)).scalars()
+    redirections = db.session.execute(db.select(Redirection).order_by(Redirection.id.desc())).scalars()
     return render_template('index.html', redirections=redirections, form=form)
+
 
 @app.route('/<string:url>')
 def redirection(url):
-    redirection = db.one_or_404(db.select(Redirection).where(Redirection.url_from == url))
-    return redirect(redirection.url_to)
-
-
-# @app.route("/about")
-# def about():
-#     return render_template('about.html', title='About')
-
-
-# @app.route("/register", methods=['GET', 'POST'])
-# def register():
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         flash(f'Account created for {form.username.data}!', 'success')
-#         return redirect(url_for('home'))
-#     return render_template('register.html', title='Register', form=form)
-
+    red = db.one_or_404(db.select(Redirection).where(Redirection.url_from == url))
+    return redirect(red.url_to)
 
 # @app.route("/login", methods=['GET', 'POST'])
 # def login():

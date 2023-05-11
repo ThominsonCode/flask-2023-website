@@ -5,16 +5,21 @@
 
 <form method="POST" action="/">
     {{ form.csrf_token }}
-    {{ form.url_to.label(class="form-label") }} {{ form.url_to(size=20, class="form-control") }}
 
-    {% if form.url_to.errors %}
-        {% for error in form.url_to.errors %}
-            <div class="form-text"><p class="text-danger">{{ error }}</p></div>
-        {% endfor %}
-    {% endif %}
+    <div class="mb-3">
+        {{ form.url_to.label(class="form-label") }} {{ form.url_to(size=20, class="form-control") }}
 
-    {{ form.submit(class="btn btn-primary") }} 
+        {% if form.url_to.errors %}
+            {% for error in form.url_to.errors %}
+                <div class="form-text"><p class="text-danger">{{ error }}</p></div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
 </form>
+
+<h1>URL raccourcies : </h1>
 
 <table class="table">
     <thead>
@@ -25,7 +30,7 @@
     </thead>
 {% for r in redirections %}
 <tr>
-    <td><a href="{{ url_for('redirection', url=r.url_from) }}" target="_blank">{{r.url_from}}</a></td>
+    <td><a href="{{ url_for('redirection', url=r.url_from) }}" target="_blank">{{ url_for('redirection', url=r.url_from) }}</a></td>
     <td><a  href="{{ r.url_to }}" target="_blank">{{r.url_to | truncate(100) }}</a></td>
 </tr>
 {% endfor %}

@@ -28,6 +28,7 @@ def redirection(url):
     red = db.one_or_404(db.select(Redirection).where(Redirection.url_from == url))
     return redirect(red.url_to)
 
+# test
 # @app.route("/login", methods=['GET', 'POST'])
 # def login():
 #     form = LoginForm()

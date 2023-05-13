@@ -11,6 +11,9 @@ db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"
+login_manager.login_message = "Vous devez être connecté pour accéder à cette ressource."
+login_manager.login_message_category = "danger"
 
 from myapp import routes
 from myapp.models import User

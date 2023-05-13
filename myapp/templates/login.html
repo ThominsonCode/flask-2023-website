@@ -1,0 +1,31 @@
+{% extends "common.html" %}
+
+{% block body %}
+
+<h1>Login</h1>
+
+<form method="POST" action="{{ url_for('login') }}">
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+        {{ form.email.label(class="form-label") }} {{ form.email(size=20, class="form-control") }}
+
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <div class="form-text"><p class="text-danger">{{ error }}</p></div>
+            {% endfor %}
+        {% endif %}
+
+        {{ form.password.label(class="form-label") }} {{ form.password(size=20, class="form-control") }}
+
+        {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <div class="form-text"><p class="text-danger">{{ error }}</p></div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% endblock %}

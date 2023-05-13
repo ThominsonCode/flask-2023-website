@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from myapp import app, db
-from myapp.forms import RedirectionForm
-from myapp.models import Redirection
+from myapp.forms import RedirectionForm, LoginForm
+from myapp.models import Redirection, User
 
 import random
 import string
@@ -27,6 +27,18 @@ def index():
 def redirection(url):
     red = db.one_or_404(db.select(Redirection).where(Redirection.url_from == url))
     return redirect(red.url_to)
+
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = db.session.execute(db.select(User).where(User.email == form.email.data)).scalar()
+        if not user or form.password.data != user.password:
+            flash('Email ou mot de passe incorrect', 'danger')
+        else:
+            flash('Connexion réussie', 'success')
+    return render_template('login.html', form=form)
 
 # test
 # @app.route("/login", methods=['GET', 'POST'])

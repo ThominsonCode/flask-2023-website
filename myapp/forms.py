@@ -10,6 +10,7 @@ class RedirectionForm(FlaskForm) :
 class LoginForm(FlaskForm) :
     email = StringField('Email', validators=[InputRequired(), Email(message='Cet email n\'est pas valide'), Length(4, 64)])  
     password = PasswordField('Password', validators=[InputRequired(), Length(8, 64)])
+    submit = SubmitField('Se connecter')
 
 
 # class RegistrationForm(FlaskForm):

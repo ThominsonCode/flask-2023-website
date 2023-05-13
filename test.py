@@ -15,24 +15,25 @@ with app.app_context():
 
     user1 = User(
         email = "toto@toto.fr",
-        password = "totototo"
+        name = 'Thomas',
+        password = "totototo",
     )
     db.session.add(user1)
     db.session.commit()
 
     red2 = Redirection(
-        user = user1.id,
+        user = user1,
         url_from = "bbbb",
         url_to = "https://www.duckduckgo.com"
     )
     db.session.add(red2)
     red2 = Redirection(
-        user = user1.id,
+        user = user1,
         url_from = "cccc",
         url_to = "https://www.ecosia.com"
     )
     db.session.add(red2)
     db.session.commit()
 
-    red = db.session.execute(db.select(Redirection).where(Redirection.user == user1.id)).scalars()
+    red = db.session.execute(db.select(Redirection).where(Redirection.user == user1)).scalars()
     print([r for r in red])

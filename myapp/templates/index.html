@@ -1,7 +1,10 @@
 {% extends "common.html" %}
 
 {% block body %}
-<h1>Index</h1>
+
+{% if current_user.is_authenticated %}
+  Bonjour {{ current_user.name }}!
+{% endif %}
 
 <form method="POST" action="/">
     {{ form.csrf_token }}

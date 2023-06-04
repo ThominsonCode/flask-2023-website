@@ -8,9 +8,8 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(30), unique=False, nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(30), nullable=False)
-
+    
     redirections = db.relationship('Redirection', backref='user')
-
 
 
 class Redirection(db.Model):

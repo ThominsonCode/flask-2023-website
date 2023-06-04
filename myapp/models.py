@@ -12,7 +12,6 @@ class User(db.Model, UserMixin):
     redirections = db.relationship('Redirection', backref='user')
 
 
-
 class Redirection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url_from = db.Column(db.String(20), unique=True, nullable=False)

@@ -7,6 +7,8 @@ from flask_login import login_user, login_required, logout_user
 import random
 import string
 
+from flask import request
+import requests
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -49,6 +51,22 @@ def logout():
     logout_user()
     flash('Vous avez été déconnecté.', 'warning')
     return redirect(url_for('index'))
+
+@app.route('/proxy/', methods=['GET'])
+def proxy():
+    url = request.args.get('url')
+    if url:
+        try:
+            response = requests.get(url)
+            response_text = response.text
+            response_text = response_text.replace('href="http://phoenixjp.net', 'href="http://192.168.1.59:5000/proxy/?url=http://phoenixjp.net')
+            response_text = response_text.replace('href="..', 'href="http://192.168.1.59:5000/proxy/?url=http://www.phoenixjp.net/news/fr/..')
+            response_text = response_text.replace('src="..', 'src="http://192.168.1.59:5000/proxy/?url=http://www.phoenixjp.net/news/fr/..')
+            return response_text
+        except requests.exceptions.RequestException as e:
+            return str(e)
+    else:
+        return 'No URL provided.'
 # test
 # @app.route("/login", methods=['GET', 'POST'])
 # def login():

@@ -1,0 +1,61 @@
+{% extends "common.html" %}
+{% block head %}
+<script src="{{ url_for('static', filename='js/create_survey.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+
+<!-- <form action="" method="post">
+        <label for="form_title">Titre</label>
+        <input type="text" name="form_title" id="form_title">
+
+
+        <div>
+            <button type="button" id="button_add_question">Ajouter une question</button>
+        </div>
+        <button type="submit">Créer le sondage</button>
+    </form> -->
+
+
+
+    {% if form.errors %}
+    {{ form.errors }}
+{% endif %}
+
+
+
+<form method="POST" action="#">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+        {{ form.title.label(class="form-label") }} {{ form.title(class="form-control") }}
+    </div>
+    {% for question in form.questions %}
+    {{ question.csrf_token }}
+
+    <fieldset class="card p-3 mb-3 bg-body-secondary">
+        <div class="mb-3">
+            {{question.text.label(class="form-label")}} {{question.text(class="form-control")}}
+        </div>
+        <div class="mb-3">
+            {{question.question_type.label(class="form-label")}} {{question.question_type(class="form-select")}}
+        </div>
+        <div class="mb-3">
+            {% for choice in question.choices %}
+            {{ choice.csrf_token }}
+            <p>
+                {{choice.text.label(class="form-label")}}
+                {{choice.text(class="form-control")}}
+            </p>
+            {% endfor %}
+        </div>
+    </fieldset>
+    {% endfor %}
+
+    <div>
+        <button type="button" id="button_add_question">Ajouter une question</button>
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% endblock %}

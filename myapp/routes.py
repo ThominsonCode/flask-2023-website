@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from myapp import app, db
-from myapp.forms import RedirectionForm, LoginForm
-from myapp.models import Redirection, User
+from myapp.forms import RedirectionForm, LoginForm, SurveyForm
+from myapp.models import Redirection, User, Survey, Choice, Question
 from flask_login import login_user, login_required, logout_user
 
 import random
@@ -51,6 +51,25 @@ def logout():
     logout_user()
     flash('Vous avez été déconnecté.', 'warning')
     return redirect(url_for('index'))
+
+@app.route("/create_survey/", methods=['GET', 'POST'])
+def create_survey():
+    form = SurveyForm()
+    if form.validate_on_submit():
+        survey = Survey(title=form.title.data)
+        for question_form in form.questions:
+            question = Question(text=question_form.text.data, question_type=question_form.question_type.data)
+            for choice_form in question_form.choices:
+                choice = Choice(text=choice_form.text.data)
+                question.choices.append(choice)
+            survey.questions.append(question)
+        db.session.add(survey)
+        db.session.commit()
+        # return redirect(url_for('index'))
+    else:
+        print('ne valide pas')
+    return render_template('create_survey.html', page_title='Nouveau sondage', form = form)
+
 
 @app.route('/proxy/', methods=['GET'])
 def proxy():

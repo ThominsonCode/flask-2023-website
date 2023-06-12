@@ -1,6 +1,7 @@
 from datetime import datetime
 from myapp import db
 from flask_login import UserMixin
+from sqlalchemy import Enum
 
 
 class User(db.Model, UserMixin):
@@ -22,4 +23,23 @@ class Redirection(db.Model):
     def __repr__(self):
         return f"Redirection('{self.url_from}' => '{self.url_to}')"
 
-  
+
+class Survey(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    questions = db.relationship('Question', backref='survey')
+
+
+class Question(db.Model):    
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(120), nullable=False)
+    question_type = db.Column(Enum('radio', 'checkbox', 'textfield', 'textarea'), nullable=False)
+    choices = db.relationship('Choice', backref='question')
+    survey_id = db.Column(db.Integer, db.ForeignKey(Survey.id), nullable=False)
+
+
+class Choice(db.Model):    
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(120), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey(Question.id), nullable=False)
+
